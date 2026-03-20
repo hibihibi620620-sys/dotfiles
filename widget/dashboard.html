@@ -13,246 +13,225 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
       background-color: #191919;
       color: #e0e0e0;
       font-family: 'Roboto Mono', monospace;
-      min-height: 100vh;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px 24px;
+      padding: 12px 16px;
     }
 
-    .container {
+    /* ── 左右2カラム ── */
+    .layout {
       width: 100%;
       max-width: 640px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 48px;
+      gap: 16px;
+      height: 180px;
     }
 
-    /* ── 時計 ── */
-    .clock-block {
+    /* ── 左：時計＋日付 ── */
+    .left {
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 6px;
+      padding-right: 16px;
+      border-right: 1px solid #2a2a2a;
+      height: 100%;
     }
 
     .clock {
-      font-size: clamp(56px, 14vw, 96px);
+      font-size: 52px;
       font-weight: 200;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       color: #f5f5f5;
       line-height: 1;
+      white-space: nowrap;
     }
 
     .clock .seconds {
-      font-size: 0.55em;
-      color: #888;
+      font-size: 0.5em;
+      color: #666;
       vertical-align: super;
-      margin-left: 4px;
+      margin-left: 3px;
     }
 
     .date {
-      font-size: clamp(12px, 3vw, 15px);
-      font-weight: 400;
-      color: #666;
-      letter-spacing: 0.12em;
-    }
-
-    /* ── 天気 ── */
-    .weather-block {
-      width: 100%;
-    }
-
-    .weather-location {
       font-size: 11px;
       font-weight: 400;
-      color: #444;
+      color: #555;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .location {
+      font-size: 9px;
+      color: #3a3a3a;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 20px;
+      margin-top: 4px;
     }
 
-    .weather-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
-
-    .weather-card {
-      background: #222;
-      border: 1px solid #2a2a2a;
-      padding: 20px 12px;
+    /* ── 右：天気4日分（縦並び） ── */
+    .right {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 2px;
+      height: 100%;
+      justify-content: center;
+    }
+
+    .weather-row {
+      display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      padding: 5px 8px;
       border-radius: 2px;
-      transition: background 0.2s;
+      background: transparent;
     }
 
-    .weather-card:first-child {
-      background: #252525;
-      border-color: #333;
+    .weather-row:first-child {
+      background: #222;
     }
 
-    .weather-day {
-      font-size: 10px;
+    .w-day {
+      font-size: 9px;
       color: #555;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
+      width: 30px;
+      flex-shrink: 0;
     }
 
-    .weather-card:first-child .weather-day {
+    .weather-row:first-child .w-day {
       color: #888;
     }
 
-    .weather-icon {
-      font-size: 28px;
-      line-height: 1;
-    }
-
-    .weather-temps {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .temp-high {
+    .w-icon {
       font-size: 16px;
-      font-weight: 500;
-      color: #ccc;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 22px;
+      text-align: center;
     }
 
-    .temp-low {
-      font-size: 12px;
-      font-weight: 400;
-      color: #555;
-    }
-
-    .weather-desc {
+    .w-desc {
       font-size: 9px;
       color: #444;
-      letter-spacing: 0.05em;
-      text-align: center;
-      line-height: 1.4;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .w-temps {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .w-high {
+      font-size: 12px;
+      font-weight: 500;
+      color: #bbb;
+    }
+
+    .w-low {
+      font-size: 10px;
+      color: #444;
     }
 
     .loading {
-      font-size: 11px;
-      color: #444;
+      font-size: 10px;
+      color: #3a3a3a;
       letter-spacing: 0.1em;
-      text-align: center;
-      padding: 24px 0;
-    }
-
-    /* ── 区切り線 ── */
-    .divider {
-      width: 32px;
-      height: 1px;
-      background: #2a2a2a;
-    }
-
-    @media (max-width: 400px) {
-      .weather-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .weather-card:first-child {
-        grid-column: 1 / -1;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 16px 20px;
-      }
-      .weather-card:first-child .weather-temps {
-        flex-direction: row;
-        gap: 8px;
-      }
+      padding: 8px 0;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="layout">
 
-    <div class="clock-block">
-      <div class="clock" id="clock">
+    <div class="left">
+      <div class="clock">
         <span id="hm">--:--</span><span class="seconds" id="sec">--</span>
       </div>
-      <div class="date" id="date">読込中...</div>
+      <div class="date" id="date">...</div>
+      <div class="location">Tokyo</div>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="weather-block">
-      <div class="weather-location">東京</div>
-      <div id="weather-grid" class="weather-grid">
-        <div class="loading">天気を取得中...</div>
-      </div>
+    <div class="right" id="weather-list">
+      <div class="loading">loading...</div>
     </div>
 
   </div>
 
   <script>
-    // ── 時計 ──
-    const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    const DAYS_JA = ['日', '月', '火', '水', '木', '金', '土'];
-    const MONTHS_JA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+    const DAYS    = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    const DAYS_JA = ['日','月','火','水','木','金','土'];
 
     function pad(n) { return String(n).padStart(2, '0'); }
 
     function updateClock() {
       const now = new Date();
-      document.getElementById('hm').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      document.getElementById('hm').textContent =
+        `${pad(now.getHours())}:${pad(now.getMinutes())}`;
       document.getElementById('sec').textContent = pad(now.getSeconds());
       document.getElementById('date').textContent =
-        `${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())}  ${DAYS_JA[now.getDay()]}曜日`;
+        `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}` +
+        `  ${DAYS_JA[now.getDay()]}`;
     }
-
     updateClock();
     setInterval(updateClock, 1000);
 
-    // ── 天気 ──
     const WMO = {
-      0:  { icon: '☀️',  desc: '快晴' },
-      1:  { icon: '🌤️', desc: 'ほぼ晴れ' },
-      2:  { icon: '⛅',  desc: '一部曇り' },
-      3:  { icon: '☁️',  desc: '曇り' },
-      45: { icon: '🌫️', desc: '霧' },
-      48: { icon: '🌫️', desc: '霧氷' },
-      51: { icon: '🌦️', desc: '霧雨（弱）' },
-      53: { icon: '🌦️', desc: '霧雨' },
-      55: { icon: '🌧️', desc: '霧雨（強）' },
-      61: { icon: '🌧️', desc: '雨（弱）' },
-      63: { icon: '🌧️', desc: '雨' },
-      65: { icon: '🌧️', desc: '大雨' },
-      71: { icon: '🌨️', desc: '雪（弱）' },
-      73: { icon: '🌨️', desc: '雪' },
-      75: { icon: '❄️',  desc: '大雪' },
-      77: { icon: '🌨️', desc: 'みぞれ' },
-      80: { icon: '🌦️', desc: 'にわか雨（弱）' },
-      81: { icon: '🌦️', desc: 'にわか雨' },
-      82: { icon: '⛈️',  desc: '激しいにわか雨' },
-      85: { icon: '🌨️', desc: 'にわか雪' },
-      86: { icon: '❄️',  desc: '大雪（強）' },
-      95: { icon: '⛈️',  desc: '雷雨' },
-      96: { icon: '⛈️',  desc: '雷雨＋雹' },
-      99: { icon: '⛈️',  desc: '激しい雷雨' },
+      0:  { icon: '☀️',  desc: '快晴'        },
+      1:  { icon: '🌤️', desc: 'ほぼ晴れ'    },
+      2:  { icon: '⛅',  desc: '一部曇り'    },
+      3:  { icon: '☁️',  desc: '曇り'        },
+      45: { icon: '🌫️', desc: '霧'          },
+      48: { icon: '🌫️', desc: '霧氷'        },
+      51: { icon: '🌦️', desc: '霧雨（弱）'  },
+      53: { icon: '🌦️', desc: '霧雨'        },
+      55: { icon: '🌧️', desc: '霧雨（強）'  },
+      61: { icon: '🌧️', desc: '雨（弱）'    },
+      63: { icon: '🌧️', desc: '雨'          },
+      65: { icon: '🌧️', desc: '大雨'        },
+      71: { icon: '🌨️', desc: '雪（弱）'    },
+      73: { icon: '🌨️', desc: '雪'          },
+      75: { icon: '❄️',  desc: '大雪'        },
+      77: { icon: '🌨️', desc: 'みぞれ'      },
+      80: { icon: '🌦️', desc: 'にわか雨（弱）'},
+      81: { icon: '🌦️', desc: 'にわか雨'    },
+      82: { icon: '⛈️',  desc: '激しいにわか雨'},
+      85: { icon: '🌨️', desc: 'にわか雪'    },
+      86: { icon: '❄️',  desc: '大雪（強）'  },
+      95: { icon: '⛈️',  desc: '雷雨'        },
+      96: { icon: '⛈️',  desc: '雷雨＋雹'    },
+      99: { icon: '⛈️',  desc: '激しい雷雨'  },
     };
 
-    function getWeatherInfo(code) {
+    function getInfo(code) {
       return WMO[code] || { icon: '🌡️', desc: `code:${code}` };
     }
 
-    function dayLabel(dateStr, index) {
-      if (index === 0) return 'TODAY';
-      if (index === 1) return 'TMR';
-      const d = new Date(dateStr);
-      return DAYS[d.getDay()];
+    function dayLabel(dateStr, i) {
+      if (i === 0) return 'TODAY';
+      if (i === 1) return 'TMR';
+      return DAYS[new Date(dateStr).getDay()];
     }
 
     async function fetchWeather() {
@@ -260,41 +239,35 @@
         + '?latitude=35.6762&longitude=139.6503'
         + '&daily=weathercode,temperature_2m_max,temperature_2m_min'
         + '&timezone=Asia%2FTokyo&forecast_days=4';
-
       try {
-        const res = await fetch(url);
+        const res  = await fetch(url);
         const data = await res.json();
         const { daily } = data;
-        const grid = document.getElementById('weather-grid');
-        grid.innerHTML = '';
-
+        const list = document.getElementById('weather-list');
+        list.innerHTML = '';
         for (let i = 0; i < 4; i++) {
-          const info = getWeatherInfo(daily.weathercode[i]);
-          const high = Math.round(daily.temperature_2m_max[i]);
-          const low  = Math.round(daily.temperature_2m_min[i]);
+          const info  = getInfo(daily.weathercode[i]);
+          const high  = Math.round(daily.temperature_2m_max[i]);
+          const low   = Math.round(daily.temperature_2m_min[i]);
           const label = dayLabel(daily.time[i], i);
-
-          const card = document.createElement('div');
-          card.className = 'weather-card';
-          card.innerHTML = `
-            <div class="weather-day">${label}</div>
-            <div class="weather-icon">${info.icon}</div>
-            <div class="weather-temps">
-              <div class="temp-high">${high}°</div>
-              <div class="temp-low">${low}°</div>
-            </div>
-            <div class="weather-desc">${info.desc}</div>
-          `;
-          grid.appendChild(card);
+          const row   = document.createElement('div');
+          row.className = 'weather-row';
+          row.innerHTML =
+            `<div class="w-day">${label}</div>` +
+            `<div class="w-icon">${info.icon}</div>` +
+            `<div class="w-desc">${info.desc}</div>` +
+            `<div class="w-temps">` +
+              `<span class="w-high">${high}°</span>` +
+              `<span class="w-low">${low}°</span>` +
+            `</div>`;
+          list.appendChild(row);
         }
-      } catch (e) {
-        document.getElementById('weather-grid').innerHTML =
-          '<div class="loading">天気の取得に失敗しました</div>';
+      } catch {
+        document.getElementById('weather-list').innerHTML =
+          '<div class="loading">取得失敗</div>';
       }
     }
-
     fetchWeather();
-    // 30分ごとに天気を更新
     setInterval(fetchWeather, 30 * 60 * 1000);
   </script>
 </body>
